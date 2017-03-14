@@ -17,7 +17,7 @@ if not exist %CD%\data mkdir %CD%\data
 
 :VERSION
 cls
-echo 1 > %CD%\doc\version.txt
+echo 2 > %CD%\doc\version.txt
 set /p current_version=<%CD%\doc\version.txt
 
 :CREDITS
@@ -35,7 +35,16 @@ echo ================================================== >> %CD%\doc\license.txt
 echo =    You may also modify this script without     = >> %CD%\doc\license.txt
 echo =         consent for PERSONAL USE ONLY          = >> %CD%\doc\license.txt
 echo ================================================== >> %CD%\doc\license.txt
-start notepad.exe %CD%\doc\license.txt
+
+:CREDITSREAD
+cls
+title PORTABLE OBS LAUNCHER - ABOUT
+setlocal enabledelayedexpansion
+for /f "DELIMS=" %%i in (%CD%\doc\license.txt) do (
+	echo %%i
+)
+endlocal
+pause
 
 :OBSCHECK
 cls
@@ -310,3 +319,4 @@ cd ..
 cd ..
 xcopy /q %appdata%\obs-studio\* %CD%\data\ /e /i /y
 rmdir /s /q %appdata%\obs-studio
+exit
