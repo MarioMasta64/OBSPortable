@@ -17,12 +17,12 @@ if not exist %CD%\data mkdir %CD%\data
 
 :VERSION
 cls
-echo 2 > %CD%\doc\version.txt
+echo 4 > %CD%\doc\version.txt
 set /p current_version=<%CD%\doc\version.txt
 
 :CREDITS
 cls
-if exist %CD%\doc\license.txt goto OBSCHECK
+if exist %CD%\doc\license.txt goto ARCHCHECK
 echo ================================================== > %CD%\doc\license.txt
 echo =              Script by MarioMasta64            = >> %CD%\doc\license.txt
 :: REMOVE SPACE AFTER VERSION HITS DOUBLE DIGITS
@@ -39,16 +39,16 @@ echo ================================================== >> %CD%\doc\license.txt
 :CREDITSREAD
 cls
 title PORTABLE OBS LAUNCHER - ABOUT
-setlocal enabledelayedexpansion
-for /f "DELIMS=" %%i in (%CD%\doc\license.txt) do (
-	echo %%i
-)
-endlocal
+for /f "DELIMS=" %%i in (%CD%\doc\license.txt) do (echo %%i)
 pause
+
+:ARCHCHECK
+set arch=
+if exist "%PROGRAMFILES(X86)%" set arch=64 else set arch=32
 
 :OBSCHECK
 cls
-if not exist %CD%\bin\bin\64bit\obs64.exe goto :FILECHECK
+if not exist %CD%\bin\bin\%arch%bit\obs%arch%.exe goto :FILECHECK
 goto WGETUPDATE
 
 :FILECHECK
@@ -56,7 +56,7 @@ cls
 if not exist %CD%\extra\OBS-Studio-18.0.1-Full.zip call :DOWNLOADOBS
 :: if not exist <DLL STUFF> call :DOWNLOAD DLL STUFF
 if not exist %CD%\bin\extractobs.vbs call :EXTRACTOBS
-goto OBSCHECK
+goto ARCHCHECK
 
 :DOWNLOADOBS
 if exist OBS-Studio-18.0.1-Full.zip goto MOVEOBS
@@ -162,7 +162,7 @@ exit /b
 
 :MENU
 cls
-title PORTABLEOBSLAUNCHER - MAIN MENU
+title PORTABLE OBS LAUNCHER - MAIN MENU
 echo %NAG%
 set nag=SELECTION TIME!
 echo 1. reinstall obs [not a feature yet]
@@ -251,8 +251,8 @@ echo you are using the latest version!!
 echo Current Version: v%current_version%
 echo New Version: v%new_version%
 echo ENTER TO CONTINUE
-pause
-goto MENU
+start launcher.bat
+exit
 
 :NEWUPDATE
 cls
